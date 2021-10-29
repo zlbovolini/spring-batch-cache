@@ -1,0 +1,29 @@
+version: 3.8
+services:
+  estabelecimento:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: lbovolini/estabelecimento
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      ESTABELECIMENTO_DB_HOSTNAME: estabelecimento_mysql
+      ESTABELECIMENTO_DB_PORT: 3306
+      ESTABELECIMENTO_DB_NAME: estabelecimento
+      ESTABELECIMENTO_DB_USERNAME: estabelecimento
+      ESTABELECIMENTO_DB_PASSWORD: estabelecimento
+    depends_on:
+      - estabelecimento_mysql
+
+  estabelecimento_mysql:
+    image: mysql:8.0.27
+    environment:
+      MYSQL_ROOT_PASSWORD: estabelecimento
+      MYSQL_USER: estabelecimento
+      MYSQL_PASSWORD: estabelecimento
+      MYSQL_DATABASE: estabelecimento
+    ports:
+      - "3306:3306"
+

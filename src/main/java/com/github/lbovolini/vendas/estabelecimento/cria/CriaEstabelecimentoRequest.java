@@ -1,0 +1,27 @@
+package com.github.lbovolini.vendas.estabelecimento.cria;
+
+import com.github.lbovolini.vendas.estabelecimento.compartilhado.Estabelecimento;
+import org.hibernate.validator.constraints.br.CNPJ;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+class CriaEstabelecimentoRequest {
+
+    @NotNull
+    @Size(min = 3, max = 100)
+    private final String nome;
+
+    @NotNull
+    @CNPJ
+    private final String cnpj;
+
+    public CriaEstabelecimentoRequest(String nome, String cnpj) {
+        this.nome = nome;
+        this.cnpj = cnpj;
+    }
+
+    Estabelecimento toEstabelecimento() {
+        return new Estabelecimento(nome, cnpj);
+    }
+}
