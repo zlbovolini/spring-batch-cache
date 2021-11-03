@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `estabelecimento`.`estabelecimento` (
   `cnpj` VARCHAR(45) NOT NULL,
   `criado_em` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC) VISIBLE,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  UNIQUE INDEX `cnpj_UNIQUE` (`cnpj` ASC) VISIBLE)
 ENGINE = InnoDB;
