@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS estabelecimento;
 
 CREATE TABLE IF NOT EXISTS `estabelecimento`.`estabelecimento` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uuid` BINARY(255) NOT NULL,
+  `uuid` BINARY(16) NOT NULL,
   `nome` VARCHAR(100) NOT NULL,
   `cnpj` VARCHAR(45) NOT NULL,
   `criado_em` DATETIME NOT NULL,
