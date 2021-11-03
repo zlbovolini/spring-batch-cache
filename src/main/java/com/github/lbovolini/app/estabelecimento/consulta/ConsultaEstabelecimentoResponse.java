@@ -1,6 +1,6 @@
-package com.github.lbovolini.vendas.estabelecimento.consulta;
+package com.github.lbovolini.app.estabelecimento.consulta;
 
-import com.github.lbovolini.vendas.estabelecimento.compartilhado.Estabelecimento;
+import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 
 import java.time.Instant;
 import java.util.UUID;

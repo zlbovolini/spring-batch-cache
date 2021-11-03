@@ -1,8 +1,9 @@
-package com.github.lbovolini.vendas.estabelecimento.consulta;
+package com.github.lbovolini.app.estabelecimento.consulta;
 
-import com.github.lbovolini.vendas.estabelecimento.compartilhado.EstabelecimentoRepository;
+import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ class ConsultaEstabelecimentoController {
     }
 
     @GetMapping("/{uuid}")
-    ResponseEntity<ConsultaEstabelecimentoResponse> consultaPorUuid(UUID uuid) {
+    ResponseEntity<ConsultaEstabelecimentoResponse> consultaPorUuid(@PathVariable UUID uuid) {
         return estabelecimentoRepository.findByUuid(uuid)
                 .map(ConsultaEstabelecimentoResponse::new)
                 .map(ResponseEntity::ok)

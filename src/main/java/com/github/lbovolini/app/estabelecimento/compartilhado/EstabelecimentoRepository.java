@@ -1,4 +1,4 @@
-package com.github.lbovolini.vendas.estabelecimento.compartilhado;
+package com.github.lbovolini.app.estabelecimento.compartilhado;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;

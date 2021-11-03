@@ -1,6 +1,6 @@
-package com.github.lbovolini.vendas.estabelecimento.cria;
+package com.github.lbovolini.app.estabelecimento.cria;
 
-import com.github.lbovolini.vendas.estabelecimento.compartilhado.Estabelecimento;
+import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import javax.validation.constraints.NotNull;

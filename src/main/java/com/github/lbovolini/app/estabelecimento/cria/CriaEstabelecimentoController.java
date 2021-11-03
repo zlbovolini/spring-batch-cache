@@ -1,7 +1,7 @@
-package com.github.lbovolini.vendas.estabelecimento.cria;
+package com.github.lbovolini.app.estabelecimento.cria;
 
-import com.github.lbovolini.vendas.estabelecimento.compartilhado.Estabelecimento;
-import com.github.lbovolini.vendas.estabelecimento.compartilhado.EstabelecimentoRepository;
+import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
+import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.validation.annotation.Validated;

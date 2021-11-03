@@ -1,4 +1,4 @@
-package com.github.lbovolini.vendas.estabelecimento;
+package com.github.lbovolini.app.estabelecimento;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
