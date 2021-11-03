@@ -16,7 +16,7 @@ class CriaEstabelecimentoRequest {
     @CNPJ
     private final String cnpj;
 
-    public CriaEstabelecimentoRequest(String nome, String cnpj) {
+    CriaEstabelecimentoRequest(String nome, String cnpj) {
         this.nome = nome;
         this.cnpj = cnpj;
     }
