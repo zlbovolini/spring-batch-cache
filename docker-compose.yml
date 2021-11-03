@@ -16,6 +16,7 @@ services:
       ESTABELECIMENTO_DB_PASSWORD: estabelecimento
     depends_on:
       - estabelecimento_mysql
+    restart: on-failure
 
   estabelecimento_mysql:
     image: mysql:8.0.27
