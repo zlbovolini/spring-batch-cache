@@ -1,18 +1,18 @@
-package com.github.lbovolini.app.estabelecimento.cria;
+package com.github.lbovolini.app.estabelecimento.registra;
 
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 
 import java.time.Instant;
 import java.util.UUID;
 
-class CriaEstabelecimentoResponse {
+class RegistraEstabelecimentoResponse {
 
     private final UUID uuid;
     private final String nome;
     private final String cnpj;
     private final Instant criadoEm;
 
-    CriaEstabelecimentoResponse(Estabelecimento estabelecimento) {
+    RegistraEstabelecimentoResponse(Estabelecimento estabelecimento) {
         this.uuid = estabelecimento.getUuid();
         this.nome = estabelecimento.getNome();
         this.cnpj = estabelecimento.getCnpj();

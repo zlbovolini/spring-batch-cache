@@ -1,4 +1,4 @@
-package com.github.lbovolini.app.estabelecimento.cria;
+package com.github.lbovolini.app.estabelecimento.registra;
 
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
@@ -15,19 +15,19 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/api/estabelecimentos")
-class CriaEstabelecimentoController {
+class RegistraEstabelecimentoController {
 
     private final EstabelecimentoRepository estabelecimentoRepository;
     private final TransactionTemplate transaction;
 
-    CriaEstabelecimentoController(EstabelecimentoRepository estabelecimentoRepository,
-                                  TransactionTemplate transaction) {
+    RegistraEstabelecimentoController(EstabelecimentoRepository estabelecimentoRepository,
+                                      TransactionTemplate transaction) {
         this.estabelecimentoRepository = estabelecimentoRepository;
         this.transaction = transaction;
     }
 
     @PostMapping
-    ResponseEntity<CriaEstabelecimentoResponse> cria(@Valid @RequestBody CriaEstabelecimentoRequest request) {
+    ResponseEntity<RegistraEstabelecimentoResponse> registra(@Valid @RequestBody RegistraEstabelecimentoRequest request) {
 
         boolean jaCadastrado = estabelecimentoRepository.findByCnpj(request.getCnpj()).isPresent();
         
@@ -38,7 +38,7 @@ class CriaEstabelecimentoController {
         Estabelecimento estabelecimento = request.toEstabelecimento();
 
         transaction.execute(status -> estabelecimentoRepository.save(estabelecimento));
-        CriaEstabelecimentoResponse response = new CriaEstabelecimentoResponse(estabelecimento);
+        RegistraEstabelecimentoResponse response = new RegistraEstabelecimentoResponse(estabelecimento);
 
         return ResponseEntity.ok(response);
     }
