@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @Validated
 @RestController
@@ -36,10 +38,15 @@ class RegistraEstabelecimentoController {
         }
 
         Estabelecimento estabelecimento = request.toEstabelecimento();
-
         transaction.execute(status -> estabelecimentoRepository.save(estabelecimento));
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{uuid}")
+                .buildAndExpand(estabelecimento.getUuid())
+                .toUri();
+
         RegistraEstabelecimentoResponse response = new RegistraEstabelecimentoResponse(estabelecimento);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.created(location).body(response);
     }
 }
