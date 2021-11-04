@@ -10,4 +10,6 @@ public interface EstabelecimentoRepository extends CrudRepository<Estabeleciment
 
     @Cacheable(cacheNames = "estabelecimento", key="#uuid")
     Optional<Estabelecimento> findByUuid(UUID uuid);
+
+    Optional<Estabelecimento> findByCnpj(String cnpj);
 }

@@ -28,6 +28,13 @@ class CriaEstabelecimentoController {
 
     @PostMapping
     ResponseEntity<CriaEstabelecimentoResponse> cria(@Valid @RequestBody CriaEstabelecimentoRequest request) {
+
+        boolean jaCadastrado = estabelecimentoRepository.findByCnpj(request.getCnpj()).isPresent();
+        
+        if (jaCadastrado) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
         Estabelecimento estabelecimento = request.toEstabelecimento();
 
         transaction.execute(status -> estabelecimentoRepository.save(estabelecimento));

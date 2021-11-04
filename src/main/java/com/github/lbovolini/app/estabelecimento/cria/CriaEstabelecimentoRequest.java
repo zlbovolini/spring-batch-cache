@@ -21,6 +21,10 @@ class CriaEstabelecimentoRequest {
         this.cnpj = cnpj;
     }
 
+    String getCnpj() {
+        return cnpj;
+    }
+
     Estabelecimento toEstabelecimento() {
         return new Estabelecimento(nome, cnpj);
     }
