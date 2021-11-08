@@ -14,6 +14,8 @@ services:
       ESTABELECIMENTO_DB_NAME: estabelecimento
       ESTABELECIMENTO_DB_USERNAME: estabelecimento
       ESTABELECIMENTO_DB_PASSWORD: estabelecimento
+      ESTABELECIMENTO_CACHE_HOSTNAME: estabelecimentos_redis
+      ESTABELECIMENTO_CACHE_PORT: 6379
     depends_on:
       - estabelecimento_mysql
     restart: on-failure
@@ -29,3 +31,8 @@ services:
       - "3306:3306"
     volumes:
       - ./docker/create-database.sql:/docker-entrypoint-initdb.d/1-create-database.sql
+
+  estabelecimentos_redis:
+    image: redis:6.2.6-alpine3.14
+    ports:
+      - "6379:6379"

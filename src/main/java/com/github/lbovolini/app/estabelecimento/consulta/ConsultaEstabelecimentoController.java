@@ -1,6 +1,5 @@
 package com.github.lbovolini.app.estabelecimento.consulta;
 
-import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,15 +12,15 @@ import java.util.UUID;
 @RequestMapping("/api/estabelecimentos")
 class ConsultaEstabelecimentoController {
 
-    private final EstabelecimentoRepository estabelecimentoRepository;
+    private final ConsultaEstabelecimentoCache consultaEstabelecimentoCache;
 
-    ConsultaEstabelecimentoController(EstabelecimentoRepository estabelecimentoRepository) {
-        this.estabelecimentoRepository = estabelecimentoRepository;
+    ConsultaEstabelecimentoController(ConsultaEstabelecimentoCache consultaEstabelecimentoCache) {
+        this.consultaEstabelecimentoCache = consultaEstabelecimentoCache;
     }
 
     @GetMapping("/{uuid}")
     ResponseEntity<ConsultaEstabelecimentoResponse> consultaPorUuid(@PathVariable UUID uuid) {
-        return estabelecimentoRepository.findByUuid(uuid)
+        return consultaEstabelecimentoCache.consultaPorUuid(uuid)
                 .map(ConsultaEstabelecimentoResponse::new)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

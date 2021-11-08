@@ -35,7 +35,7 @@ public class Estabelecimento {
     @Deprecated
     Estabelecimento() {}
 
-    public Estabelecimento( String nome, String cnpj) {
+    public Estabelecimento(String nome, String cnpj) {
         this.nome = nome;
         this.cnpj = cnpj;
     }
@@ -48,8 +48,16 @@ public class Estabelecimento {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getCnpj() {
         return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public Instant getCriadoEm() {
