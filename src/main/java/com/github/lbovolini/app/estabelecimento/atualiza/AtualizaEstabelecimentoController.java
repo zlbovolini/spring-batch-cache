@@ -1,5 +1,7 @@
 package com.github.lbovolini.app.estabelecimento.atualiza;
 
+import com.github.lbovolini.app.estabelecimento.compartilhado.Cliente;
+import com.github.lbovolini.app.estabelecimento.compartilhado.ClienteRepository;
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -9,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,10 +21,12 @@ import java.util.UUID;
 class AtualizaEstabelecimentoController {
 
     private final EstabelecimentoRepository estabelecimentoRepository;
+    private final ClienteRepository clienteRepository;
     private final TransactionTemplate transaction;
 
-    AtualizaEstabelecimentoController(EstabelecimentoRepository estabelecimentoRepository, TransactionTemplate transaction) {
+    AtualizaEstabelecimentoController(EstabelecimentoRepository estabelecimentoRepository, ClienteRepository clienteRepository, TransactionTemplate transaction) {
         this.estabelecimentoRepository = estabelecimentoRepository;
+        this.clienteRepository = clienteRepository;
         this.transaction = transaction;
     }
 
@@ -53,6 +58,8 @@ class AtualizaEstabelecimentoController {
                 .map(estabelecimento -> {
                     estabelecimento.setNome(request.getNome());
                     estabelecimento.setCnpj(request.getCnpj());
+                    List<Cliente> clientes = clienteRepository.findAllByUuidIn(request.getClientes());
+                    estabelecimento.setClientes(clientes);
 
                     return estabelecimento;
                 })

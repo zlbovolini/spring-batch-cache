@@ -1,12 +1,14 @@
 package com.github.lbovolini.app.estabelecimento.compartilhado;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class Estabelecimento {
@@ -28,6 +30,10 @@ public class Estabelecimento {
     private String cnpj;
 
     private Instant criadoEm = Instant.now();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "estabelecimento", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Cliente> clientes = new ArrayList<>();
 
     /**
      * Requisito do Hibernate
@@ -62,5 +68,35 @@ public class Estabelecimento {
 
     public Instant getCriadoEm() {
         return criadoEm;
+    }
+
+    public List<Cliente> getClientes() {
+        return Collections.unmodifiableList(clientes);
+    }
+
+    public void adicionaCliente(Cliente cliente) {
+        Assert.isTrue(equals(cliente.getEstabelecimento()), "Cliente deve estar associado ao mesmo estabelecimento");
+        this.clientes.add(cliente);
+    }
+
+    public void setClientes(List<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) { return true; }
+
+        if (object == null || getClass() != object.getClass()) { return false; }
+
+        Estabelecimento that = (Estabelecimento) object;
+
+        return Objects.equals(nome, that.nome)
+                && Objects.equals(cnpj, that.cnpj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, cnpj);
     }
 }
