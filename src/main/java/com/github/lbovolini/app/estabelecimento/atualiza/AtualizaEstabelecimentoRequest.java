@@ -20,11 +20,11 @@ class AtualizaEstabelecimentoRequest {
         this.cnpj = cnpj;
     }
 
-    String getNome() {
+    public String getNome() {
         return nome;
     }
 
-    String getCnpj() {
+    public String getCnpj() {
         return cnpj;
     }
 

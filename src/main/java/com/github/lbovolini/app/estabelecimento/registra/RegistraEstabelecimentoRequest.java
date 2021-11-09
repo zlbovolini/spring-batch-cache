@@ -21,7 +21,11 @@ class RegistraEstabelecimentoRequest {
         this.cnpj = cnpj;
     }
 
-    String getCnpj() {
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCnpj() {
         return cnpj;
     }
 
