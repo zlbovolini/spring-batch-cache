@@ -27,37 +27,27 @@ class AtualizaEstabelecimentoController {
     @CacheEvict(cacheNames = "estabelecimento", key = "#uuid", condition = "#result.getStatusCode().is2xxSuccessful()")
     public ResponseEntity<Void> atualiza(@PathVariable UUID uuid, @Valid @RequestBody AtualizaEstabelecimentoRequest request) {
 
-        boolean cnpjCadastradoOutroEstabelecimento = verificaCnpjCadastradoOutroEstabelecimento(uuid, request.getCnpj());
+        boolean cnpjCadastradoOutroEstabelecimento = verificaCnpjCadastrado(uuid, request.getCnpj());
 
         if (cnpjCadastradoOutroEstabelecimento) {
             return ResponseEntity.unprocessableEntity().build();
         }
 
-        boolean foiAtualizado = atualizaDados(uuid, request);
-
-        if (foiAtualizado) {
-            return ResponseEntity.ok().build();
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
-    private boolean verificaCnpjCadastradoOutroEstabelecimento(UUID uuid, String cnpj) {
-        return estabelecimentoRepository.findByCnpj(cnpj)
-                .filter(estabelecimento -> !estabelecimento.getUuid().equals(uuid))
-                .isPresent();
-    }
-
-    private boolean atualizaDados(UUID uuid, AtualizaEstabelecimentoRequest request) {
-        return transaction.execute(status -> estabelecimentoRepository.findByUuid(uuid)
+        return estabelecimentoRepository.findByUuid(uuid)
                 .map(estabelecimento -> {
                     estabelecimento.setNome(request.getNome());
                     estabelecimento.setCnpj(request.getCnpj());
 
-                    return estabelecimento;
+                    transaction.execute(status -> estabelecimentoRepository.save(estabelecimento));
+
+                    return ResponseEntity.ok((Void) null);
                 })
-                .isPresent()
-        );
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    private boolean verificaCnpjCadastrado(UUID uuid, String cnpj) {
+        return estabelecimentoRepository.findByCnpj(cnpj)
+                .filter(estabelecimento -> !estabelecimento.getUuid().equals(uuid))
+                .isPresent();
+    }
 }
