@@ -21,7 +21,6 @@ class ConsultaEstabelecimentoController {
     @GetMapping("/{uuid}")
     ResponseEntity<ConsultaEstabelecimentoResponse> consultaPorUuid(@PathVariable UUID uuid) {
         return consultaEstabelecimentoCache.consultaPorUuid(uuid)
-                .map(ConsultaEstabelecimentoResponse::new)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

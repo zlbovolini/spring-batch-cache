@@ -1,6 +1,5 @@
 package com.github.lbovolini.app.estabelecimento.consulta;
 
-import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,8 @@ class ConsultaEstabelecimentoCache {
     }
 
     @Cacheable(cacheNames = "estabelecimento", key = "#uuid", unless="#result == null")
-    public Optional<Estabelecimento> consultaPorUuid(UUID uuid) {
-        return estabelecimentoRepository.findByUuid(uuid);
+    public Optional<ConsultaEstabelecimentoResponse> consultaPorUuid(UUID uuid) {
+        return estabelecimentoRepository.findByUuid(uuid)
+                .map(ConsultaEstabelecimentoResponse::new);
     }
 }
