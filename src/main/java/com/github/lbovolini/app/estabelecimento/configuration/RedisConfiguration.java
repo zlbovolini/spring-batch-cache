@@ -1,5 +1,6 @@
 package com.github.lbovolini.app.estabelecimento.configuration;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -28,7 +29,7 @@ class RedisConfiguration {
 
         customObjectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         customObjectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        customObjectMapper.activateDefaultTyping(defaultObjectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
+        customObjectMapper.activateDefaultTyping(defaultObjectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
 
         Jackson2JsonRedisSerializer<Object> redisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         redisSerializer.setObjectMapper(customObjectMapper);
