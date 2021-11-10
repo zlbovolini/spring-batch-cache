@@ -1,5 +1,6 @@
 package com.github.lbovolini.app.estabelecimento.registra;
 
+import com.github.lbovolini.app.estabelecimento.compartilhado.Cliente;
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,8 @@ class RegistraEstabelecimentoController {
         }
 
         Estabelecimento estabelecimento = request.toEstabelecimento();
+        // Cria estabelecimento com o cliente a seguir, somente para simplificar a implementação
+        estabelecimento.adicionaCliente(new Cliente("Lucas", estabelecimento));
         transaction.execute(status -> estabelecimentoRepository.save(estabelecimento));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
