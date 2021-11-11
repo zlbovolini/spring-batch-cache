@@ -1,7 +1,5 @@
 package com.github.lbovolini.app.estabelecimento.compartilhado;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
@@ -27,7 +25,6 @@ public class Cliente {
     Cliente() {}
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonBackReference
     private Estabelecimento estabelecimento;
 
     public Cliente(String nome, Estabelecimento estabelecimento) {

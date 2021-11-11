@@ -1,6 +1,5 @@
 package com.github.lbovolini.app.estabelecimento.compartilhado;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.util.Assert;
 
@@ -32,7 +31,6 @@ public class Estabelecimento {
     private Instant criadoEm = Instant.now();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "estabelecimento", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Cliente> clientes = new ArrayList<>();
 
     /**
