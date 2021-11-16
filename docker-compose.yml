@@ -16,8 +16,15 @@ services:
       ESTABELECIMENTO_DB_PASSWORD: estabelecimento
       ESTABELECIMENTO_CACHE_HOSTNAME: estabelecimentos_redis
       ESTABELECIMENTO_CACHE_PORT: 6379
+      ESTABELECIMENTO_LEGADO_DB_HOSTNAME: estabelecimento_legado_postgres
+      ESTABELECIMENTO_LEGADO_DB_PORT: 5432
+      ESTABELECIMENTO_LEGADO_DB_NAME: estabelecimento
+      ESTABELECIMENTO_LEGADO_DB_USERNAME: legado
+      ESTABELECIMENTO_LEGADO_DB_PASSWORD: legado
     depends_on:
       - estabelecimento_mysql
+      - estabelecimentos_redis
+      - estabelecimento_legado_postgres
     restart: on-failure
 
   estabelecimento_mysql:
@@ -36,3 +43,29 @@ services:
     image: redis:6.2.6-alpine3.14
     ports:
       - "6379:6379"
+
+  estabelecimento_legado_postgres:
+    image: postgres:14.1-alpine3.14
+    environment:
+      POSTGRES_USER: legado
+      POSTGRES_PASSWORD: legado
+      POSTGRES_DB: estabelecimento
+    ports:
+      - "5444:5432"
+    volumes:
+      - ./docker/legado/create-legacy-database.sql:/docker-entrypoint-initdb.d/1-create-database.sql
+      - estabelecimento-legado-volume:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "9999:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-volume:/usr/local/pgsql-14
+
+volumes:
+  estabelecimento-legado-volume:
+  pgadmin-volume:
