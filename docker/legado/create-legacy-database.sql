@@ -26,13 +26,14 @@ CREATE TYPE estabelecimentos.estabelecimento_type AS (
 );
 
 
-CREATE OR REPLACE PROCEDURE estabelecimentos.busca_estabelecimentos(OUT estabelecimento estabelecimentos.estabelecimento_type)
+CREATE OR REPLACE FUNCTION estabelecimentos.busca_estabelecimentos()
+RETURNS SETOF estabelecimentos.estabelecimento_type
 AS $$
 BEGIN
+	RETURN QUERY
     SELECT id, nome, cnpj, cliente
     FROM   estabelecimentos.tb_estabelecimento
-    LIMIT  2
-	INTO   estabelecimento;
+    LIMIT  2;
 END $$
 LANGUAGE PLPGSQL;
 
