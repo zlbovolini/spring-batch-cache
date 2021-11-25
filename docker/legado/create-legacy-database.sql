@@ -27,12 +27,12 @@ CREATE TYPE estabelecimentos.estabelecimento_type AS (
 
 
 CREATE OR REPLACE FUNCTION estabelecimentos.busca_estabelecimentos()
-RETURNS SETOF estabelecimentos.estabelecimento_type
+RETURNS SETOF estabelecimentos.novo_estabelecimento
 AS $$
 BEGIN
 	RETURN QUERY
     SELECT id, nome, cnpj, cliente
-    FROM   estabelecimentos.tb_estabelecimento
+    FROM   estabelecimentos.novo_estabelecimento
     LIMIT  2;
 END $$
 LANGUAGE PLPGSQL;
