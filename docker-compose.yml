@@ -21,10 +21,16 @@ services:
       ESTABELECIMENTO_LEGADO_DB_NAME: estabelecimento
       ESTABELECIMENTO_LEGADO_DB_USERNAME: legado
       ESTABELECIMENTO_LEGADO_DB_PASSWORD: legado
+      BATCH_DB_HOSTNAME: batch_mysql
+      BATCH_DB_PORT: 3306
+      BATCH_DB_NAME: batch
+      BATCH_DB_USERNAME: batch
+      BATCH_DB_PASSWORD: batch
     depends_on:
       - estabelecimento_mysql
       - estabelecimentos_redis
       - estabelecimento_legado_postgres
+      - batch_mysql
     restart: on-failure
 
   estabelecimento_mysql:
@@ -43,6 +49,18 @@ services:
     image: redis:6.2.6-alpine3.14
     ports:
       - "6379:6379"
+
+  batch_mysql:
+    image: mysql:8.0.27
+    environment:
+      MYSQL_ROOT_PASSWORD: batch
+      MYSQL_USER: batch
+      MYSQL_PASSWORD: batch
+      MYSQL_DATABASE: batch
+    ports:
+      - "3310:3306"
+#    volumes:
+#      - batch-volume:/var/lib/mysql
 
   estabelecimento_legado_postgres:
     image: postgres:14.1-alpine3.14
@@ -68,4 +86,5 @@ services:
 
 volumes:
   estabelecimento-legado-volume:
+  batch-volume:
   pgadmin-volume:
