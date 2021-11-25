@@ -1,7 +1,6 @@
 package com.github.lbovolini.app.estabelecimento.configuration.database;
 
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,7 +25,7 @@ import java.util.Map;
 class DefaultDatasourceConfiguration {
 
     @Primary
-    @Bean
+    @Bean("estabelecimentoDataSourceProperties")
     @ConfigurationProperties("estabelecimento.datasource")
     DataSourceProperties estabelecimentoDataSourceProperties() {
         return new DataSourceProperties();
@@ -34,19 +33,17 @@ class DefaultDatasourceConfiguration {
 
     @Primary
     @Bean("estabelecimentoDataSource")
-    @ConfigurationProperties("estabelecimento.datasource.configuration")
-    DataSource estabelecimentoDataSource() {
-        return estabelecimentoDataSourceProperties().initializeDataSourceBuilder()
-                .type(HikariDataSource.class)
-                .build();
+    DataSource estabelecimentoDataSource(@Qualifier("estabelecimentoDataSourceProperties") DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.initializeDataSourceBuilder().build();
     }
 
     @Primary
     @Bean("estabelecimentoEntityManagerFactory")
-    LocalContainerEntityManagerFactoryBean estabelecimentoEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+    LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
+                                                                @Qualifier("estabelecimentoDataSource") DataSource dataSource) {
         Map<String, String> properties = Map.of("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
 
-        return builder.dataSource(estabelecimentoDataSource())
+        return builder.dataSource(dataSource)
                 .packages(Estabelecimento.class)
                 .persistenceUnit("estabelecimento")
                 .properties(properties)

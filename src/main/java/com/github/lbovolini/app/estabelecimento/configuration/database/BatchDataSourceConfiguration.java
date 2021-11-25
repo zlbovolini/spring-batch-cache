@@ -1,6 +1,5 @@
 package com.github.lbovolini.app.estabelecimento.configuration.database;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.batch.BatchDataSource;
@@ -35,20 +34,17 @@ class BatchDataSourceConfiguration {
     }
 
     @Bean("batchDataSource")
-    @ConfigurationProperties("batch.datasource.configuration")
-    DataSource batchDataSource() {
-        return batchDataSourceProperties().initializeDataSourceBuilder()
-                .type(HikariDataSource.class)
-                .build();
+    DataSource batchDataSource(@Qualifier("batchDataSourceProperties") DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.initializeDataSourceBuilder().build();
     }
 
     @Bean("batchEntityManagerFactory")
-    LocalContainerEntityManagerFactoryBean estabelecimentoLegadoEntityManagerFactory(EntityManagerFactoryBuilder builder) {
-
+    LocalContainerEntityManagerFactoryBean batchEntityManagerFactory(EntityManagerFactoryBuilder builder,
+                                                                     @Qualifier("batchDataSource") DataSource dataSource) {
         Map<String, String> properties = Map.of("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy",
                "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 
-        return builder.dataSource(batchDataSource())
+        return builder.dataSource(dataSource)
                 .packages("com.github.lbovolini.app.estabelecimento.configuration.database")
                 .persistenceUnit("batch")
                 .properties(properties)

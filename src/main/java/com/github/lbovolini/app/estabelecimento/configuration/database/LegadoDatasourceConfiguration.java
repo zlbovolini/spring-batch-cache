@@ -1,6 +1,5 @@
 package com.github.lbovolini.app.estabelecimento.configuration.database;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -31,18 +30,16 @@ public class LegadoDatasourceConfiguration {
     }
 
     @Bean("estabelecimentoLegadoDataSource")
-    @ConfigurationProperties("estabelecimento-legado.datasource.configuration")
-    DataSource estabelecimentoLegadoDataSource() {
-        return estabelecimentoLegadoDataSourceProperties().initializeDataSourceBuilder()
-                .type(HikariDataSource.class)
-                .build();
+    DataSource estabelecimentoLegadoDataSource(@Qualifier("estabelecimentoLegadoDataSourceProperties") DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.initializeDataSourceBuilder().build();
     }
 
     @Bean("estabelecimentoLegadoEntityManagerFactory")
-    LocalContainerEntityManagerFactoryBean estabelecimentoLegadoEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+    LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
+                                                                @Qualifier("estabelecimentoLegadoDataSource") DataSource dataSource) {
         Map<String, String> properties = Map.of("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
 
-        return builder.dataSource(estabelecimentoLegadoDataSource())
+        return builder.dataSource(dataSource)
                 .packages("com.github.lbovolini.app.estabelecimento.batch")
                 .persistenceUnit("legado")
                 .properties(properties)
