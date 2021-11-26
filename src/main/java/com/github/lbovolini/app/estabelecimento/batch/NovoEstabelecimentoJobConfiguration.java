@@ -2,7 +2,6 @@ package com.github.lbovolini.app.estabelecimento.batch;
 
 import com.github.lbovolini.app.estabelecimento.compartilhado.Cliente;
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
-import com.github.lbovolini.app.estabelecimento.compartilhado.EstabelecimentoRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -10,37 +9,25 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-
-import javax.sql.DataSource;
 
 @Configuration
 class NovoEstabelecimentoJobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final EstabelecimentoRepository estabelecimentoRepository;
-    private final NovoEstabelecimentoRepository novoEstabelecimentoRepository;
-    @Qualifier("estabelecimentoLegadoDataSource")
-    private final DataSource dataSource;
+    private final ItemReader<NovoEstabelecimento> reader;
     private final ItemWriter<Estabelecimento> writer;
 
     NovoEstabelecimentoJobConfiguration(JobBuilderFactory jobBuilderFactory,
                                         StepBuilderFactory stepBuilderFactory,
-                                        EstabelecimentoRepository estabelecimentoRepository,
-                                        NovoEstabelecimentoRepository novoEstabelecimentoRepository,
-                                        @Qualifier("estabelecimentoLegadoDataSource") DataSource dataSource,
+                                        ItemReader<NovoEstabelecimento> reader,
                                         ItemWriter<Estabelecimento> writer) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
-        this.estabelecimentoRepository = estabelecimentoRepository;
-        this.novoEstabelecimentoRepository = novoEstabelecimentoRepository;
-        this.dataSource = dataSource;
+        this.reader = reader;
         this.writer = writer;
     }
 
@@ -56,7 +43,7 @@ class NovoEstabelecimentoJobConfiguration {
     Step chunkStep() {
         return stepBuilderFactory.get("estabelecimentoChunk")
                 .<NovoEstabelecimento, Estabelecimento>chunk(1)
-                .reader(reader())
+                .reader(reader)
                 .processor(processor())
                 .writer(writer)
                 .build();
@@ -85,16 +72,6 @@ class NovoEstabelecimentoJobConfiguration {
 //                .build();
 //    }
 //
-
-    @Bean
-    ItemReader<NovoEstabelecimento> reader() {
-        return new JdbcCursorItemReaderBuilder<NovoEstabelecimento>()
-                .name("cursorItemReader")
-                .dataSource(dataSource)
-                .sql("SELECT * FROM estabelecimentos.busca_estabelecimentos()")
-                .rowMapper(new BeanPropertyRowMapper<>(NovoEstabelecimento.class))
-                .build();
-    }
 
     @Bean
     ItemProcessor<NovoEstabelecimento, Estabelecimento> processor() {
