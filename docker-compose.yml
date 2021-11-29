@@ -27,10 +27,14 @@ services:
       BATCH_DB_USERNAME: batch
       BATCH_DB_PASSWORD: batch
     depends_on:
-      - estabelecimento_mysql
-      - estabelecimentos_redis
-      - estabelecimento_legado_postgres
-      - batch_mysql
+      estabelecimento_mysql:
+        condition: service_healthy
+      estabelecimentos_redis:
+        condition: service_started
+      estabelecimento_legado_postgres:
+        condition: service_healthy
+      batch_mysql:
+        condition: service_healthy
     restart: on-failure
 
   estabelecimento_mysql:
@@ -44,6 +48,8 @@ services:
       - "3306:3306"
     volumes:
       - ./docker/create-database.sql:/docker-entrypoint-initdb.d/1-create-database.sql
+    healthcheck:
+      test: mysqladmin --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD ping
 
   estabelecimentos_redis:
     image: redis:6.2.6-alpine3.14
@@ -61,6 +67,8 @@ services:
       - "3310:3306"
 #    volumes:
 #      - batch-volume:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD ping
 
   estabelecimento_legado_postgres:
     image: postgres:14.1-alpine3.14
@@ -73,6 +81,8 @@ services:
     volumes:
       - ./docker/legado/create-legacy-database.sql:/docker-entrypoint-initdb.d/1-create-database.sql
       - estabelecimento-legado-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready
 
   pgadmin:
     image: dpage/pgadmin4
