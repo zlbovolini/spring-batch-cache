@@ -62,3 +62,4 @@ SELECT * from estabelecimento join cliente;
 - ⬜ Tratar inserção com campo único já cadastrado (CNPJ)
 - ⬜ Melhorar o Scheduler para permitir reinicio dos jobs
 - ⬜ Desabilitar o contexto transacional ativo por padrão nos repositórios
+- ⬜ Permitir a configuração do Hibernate para cada DataSource através do arquivo de configuração application.properties
