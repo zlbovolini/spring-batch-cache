@@ -52,3 +52,13 @@ docker logs spring-batch-cache-estabelecimento-1
 ```shell
 SELECT * from estabelecimento join cliente;
 ```
+
+
+## Todo
+
+- ⬜ Inserir somente uma vez o mesmo cliente
+- ⬜ Implementar ItemSteam NovoEstabelecimentoItemPollingCleaner para criar checkpoint
+- ⬜ Utilizar StoredProcedureItemReader
+- ⬜ Tratar inserção com campo único já cadastrado (CNPJ)
+- ⬜ Melhorar o Scheduler para permitir reinicio dos jobs
+- ⬜ Desabilitar o contexto transacional ativo por padrão nos repositórios
