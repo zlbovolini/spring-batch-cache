@@ -1,4 +1,4 @@
-package com.github.lbovolini.app.estabelecimento.configuration;
+package com.github.lbovolini.app.estabelecimento.compartilhado.configuration;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;

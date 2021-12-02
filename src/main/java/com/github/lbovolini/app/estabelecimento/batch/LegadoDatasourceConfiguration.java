@@ -1,4 +1,4 @@
-package com.github.lbovolini.app.estabelecimento.configuration.database;
+package com.github.lbovolini.app.estabelecimento.batch;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -18,10 +18,10 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(enableDefaultTransactions = true,
-        basePackages = "com.github.lbovolini.app.estabelecimento.batch",
+        basePackageClasses = { NovoEstabelecimento.class },
         entityManagerFactoryRef = "estabelecimentoLegadoEntityManagerFactory",
         transactionManagerRef= "estabelecimentoLegadoTransactionManager")
-public class LegadoDatasourceConfiguration {
+class LegadoDatasourceConfiguration {
 
     @Bean("estabelecimentoLegadoDataSourceProperties")
     @ConfigurationProperties("estabelecimento-legado.datasource")
@@ -40,7 +40,7 @@ public class LegadoDatasourceConfiguration {
         Map<String, String> properties = Map.of("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
 
         return builder.dataSource(dataSource)
-                .packages("com.github.lbovolini.app.estabelecimento.batch")
+                .packages(NovoEstabelecimento.class)
                 .persistenceUnit("legado")
                 .properties(properties)
                 .build();

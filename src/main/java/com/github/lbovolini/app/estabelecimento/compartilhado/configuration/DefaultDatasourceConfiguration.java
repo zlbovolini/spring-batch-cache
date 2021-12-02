@@ -1,4 +1,4 @@
-package com.github.lbovolini.app.estabelecimento.configuration.database;
+package com.github.lbovolini.app.estabelecimento.compartilhado.configuration;
 
 import com.github.lbovolini.app.estabelecimento.compartilhado.Estabelecimento;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,8 +18,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(enableDefaultTransactions = true,
-        basePackages = "com.github.lbovolini.app.estabelecimento",
-        excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.github.lbovolini.app.estabelecimento.batch.*"),
+        basePackageClasses = { Estabelecimento.class },
         entityManagerFactoryRef = "estabelecimentoEntityManagerFactory",
         transactionManagerRef= "estabelecimentoTransactionManager")
 class DefaultDatasourceConfiguration {

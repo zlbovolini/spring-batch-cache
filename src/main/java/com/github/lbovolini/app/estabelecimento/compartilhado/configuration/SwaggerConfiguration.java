@@ -1,4 +1,4 @@
-package com.github.lbovolini.app.estabelecimento.configuration;
+package com.github.lbovolini.app.estabelecimento.compartilhado.configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

@@ -1,5 +1,6 @@
-package com.github.lbovolini.app.estabelecimento.configuration.database;
+package com.github.lbovolini.app.estabelecimento.batch;
 
+import com.github.lbovolini.app.estabelecimento.batch.metada.PackageMarker;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.batch.BatchDataSource;
@@ -22,10 +23,10 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(enableDefaultTransactions = true,
-        basePackages = "com.github.lbovolini.app.estabelecimento.configuration.database",
+        basePackageClasses = { PackageMarker.class },
         entityManagerFactoryRef = "batchEntityManagerFactory",
         transactionManagerRef= "batchTransactionManager")
-class BatchDataSourceConfiguration {
+class BatchMetadataDataSourceConfiguration {
 
     @Bean("batchDataSourceProperties")
     @ConfigurationProperties("batch.datasource")
@@ -45,7 +46,7 @@ class BatchDataSourceConfiguration {
                "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 
         return builder.dataSource(dataSource)
-                .packages("com.github.lbovolini.app.estabelecimento.configuration.database")
+                .packages(PackageMarker.class)
                 .persistenceUnit("batch")
                 .properties(properties)
                 .build();
