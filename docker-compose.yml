@@ -90,17 +90,6 @@ services:
       test: pg_isready
       interval: 5s
 
-  pgadmin:
-    image: dpage/pgadmin4
-    ports:
-      - "9999:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - pgadmin-volume:/usr/local/pgsql-14
-
 volumes:
   estabelecimento-legado-volume:
   batch-volume:
-  pgadmin-volume:
